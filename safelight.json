@@ -1,0 +1,24 @@
+{
+  "id": "safelight.tone-curve",
+  "name": "Tone Curve",
+  "version": "3.0.0",
+  "description": "Point tone curves for the image and each channel.",
+  "author": "Anthony Reimche",
+  "main": "dist/index.js",
+  "license": "GPL-3.0-only",
+  "categories": [
+    "tone"
+  ],
+  "keywords": [
+    "tone curve",
+    "curves",
+    "contrast",
+    "rgb curve",
+    "channel curve"
+  ],
+  "repository": "anthonyreimche/tone-curve",
+  "worksWith": [
+    "anthonyreimche/Develop"
+  ],
+  "minAppVersion": "3.2.0"
+}
