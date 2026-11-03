@@ -39,6 +39,8 @@ export type ToneCurves = Record<ToneCurveChannel, CurvePoint[]>;
 /** The develop params this extension reads. Core's carry many more fields. */
 export interface DevelopParams {
   toneCurve: ToneCurves;
+  /** The photo's process version: 1, 2 or 3. */
+  processVersion: number;
 }
 
 export interface DevelopStoreState {
@@ -95,14 +97,12 @@ export interface UniformDeclaration {
 }
 
 /** A per-photo table a stage's derive fills. */
-export interface StageTextureData {
-  data: Uint8Array;
+export type StageTextureData = {
   width: number;
   height: number;
-  format: "rgba8";
   /** Changes whenever the data does, so the renderer uploads it again. */
   version: number;
-}
+} & ({ data: Uint8Array; format: "rgba8" } | { data: Float32Array; format: "rgba16f" });
 
 export type StageValue = number | boolean | number[] | StageTextureData;
 

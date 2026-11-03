@@ -13,12 +13,12 @@ import { SHOW_POINT_VALUES } from "./ToneCurvePanel";
 export const TONE_CURVE_SETTINGS: SettingsContribution = {
   title: "Tone Curve",
   order: 50,
-  keywords: ["curve", "point", "input", "output", "levels", "numbers", "exact", "lightroom"],
+  keywords: ["curve", "point", "input", "output", "levels", "numbers", "exact"],
   fields: [
     {
       key: SHOW_POINT_VALUES,
       label: "Show point values",
-      hint: "Show In and Out boxes under the curve for the selected point, in 0–255 levels like Lightroom, to read or type exact values.",
+      hint: "Show In and Out boxes under the curve for the selected point, in 0–255 levels, to read or type exact values.",
       type: "boolean",
       default: false,
     },

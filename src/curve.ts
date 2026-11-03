@@ -86,20 +86,39 @@ export function makeCurveEvaluator(
 // the shader, applied in linear light and gated to RAW sources. Float
 // evaluators compose continuously and quantize ONCE at the end — chaining 8-bit
 // LUT lookups compounds rounding into visible posterization.
-export function buildRGBCurveLUT(curves: ToneCurves): Uint8Array {
+function composeCurves(curves: ToneCurves, write: (index: number, r: number, g: number, b: number) => void): void {
   const rgbEval = makeCurveEvaluator(curves.rgb);
   const redEval = makeCurveEvaluator(curves.red);
   const greenEval = makeCurveEvaluator(curves.green);
   const blueEval = makeCurveEvaluator(curves.blue);
 
-  const out = new Uint8Array(256 * 4);
   for (let i = 0; i < 256; i++) {
     const base = rgbEval(i / 255);
-    out[i * 4] = Math.round(redEval(base) * 255);
-    out[i * 4 + 1] = Math.round(greenEval(base) * 255);
-    out[i * 4 + 2] = Math.round(blueEval(base) * 255);
-    out[i * 4 + 3] = 255;
+    write(i, redEval(base), greenEval(base), blueEval(base));
   }
+}
+
+/** The 8-bit table of process version 1, whose output is frozen. */
+export function buildRGBCurveLUT(curves: ToneCurves): Uint8Array {
+  const out = new Uint8Array(256 * 4);
+  composeCurves(curves, (i, r, g, b) => {
+    out[i * 4] = Math.round(r * 255);
+    out[i * 4 + 1] = Math.round(g * 255);
+    out[i * 4 + 2] = Math.round(b * 255);
+    out[i * 4 + 3] = 255;
+  });
+  return out;
+}
+
+/** The same table unquantized, so a gentle curve keeps its sub-1/255 steps. */
+export function buildRGBCurveLUTFloat(curves: ToneCurves): Float32Array {
+  const out = new Float32Array(256 * 4);
+  composeCurves(curves, (i, r, g, b) => {
+    out[i * 4] = r;
+    out[i * 4 + 1] = g;
+    out[i * 4 + 2] = b;
+    out[i * 4 + 3] = 1;
+  });
   return out;
 }
 

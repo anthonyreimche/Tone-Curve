@@ -59,17 +59,17 @@ export function fakeApi(toneCurve: ToneCurves = DEFAULT_CURVES): Rig {
   let lastEditor: CurveEditorProps | null = null;
 
   const develop: StoreApi<DevelopStoreState> = create<DevelopStoreState>()((set) => ({
-    params: { toneCurve },
+    params: { toneCurve, processVersion: 2 },
     setToneCurve: (channel, points) => {
       calls.push({ setToneCurve: channel, points });
-      set((s) => ({ params: { toneCurve: { ...s.params.toneCurve, [channel]: points } } }));
+      set((s) => ({ params: { ...s.params, toneCurve: { ...s.params.toneCurve, [channel]: points } } }));
     },
     commitEdit: async (label) => {
       calls.push({ commitEdit: label });
     },
     resetParams: async (keys, label) => {
       calls.push({ resetParams: keys, label });
-      set({ params: { toneCurve: DEFAULT_CURVES } });
+      set((s) => ({ params: { ...s.params, toneCurve: DEFAULT_CURVES } }));
     },
   }));
 
