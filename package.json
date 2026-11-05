@@ -1,7 +1,7 @@
 {
   "name": "safelight-tone-curve",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Tone Curve extension for Safelight: point curves for the image and each channel.",
   "type": "module",
   "scripts": {
