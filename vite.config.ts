@@ -22,6 +22,8 @@ export default defineConfig({
   },
   test: {
     include: ["test/**/*.test.{ts,tsx}"],
+    // The GPU specs run on Safelight's renderer (npm run test:gpu).
+    exclude: ["test/gpu/**"],
     environment: "jsdom",
   },
 });

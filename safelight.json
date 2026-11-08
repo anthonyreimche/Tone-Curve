@@ -1,7 +1,7 @@
 {
   "id": "safelight.tone-curve",
   "name": "Tone Curve",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Point tone curves for the image and each channel.",
   "author": "Anthony Reimche",
   "main": "dist/index.js",
@@ -20,5 +20,5 @@
   "worksWith": [
     "anthonyreimche/Develop"
   ],
-  "minAppVersion": "3.2.0"
+  "minAppVersion": "3.2.1"
 }

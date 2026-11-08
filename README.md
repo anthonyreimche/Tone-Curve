@@ -20,6 +20,10 @@ photos keep their curves. While the extension is off or uninstalled, those
 photos show without them; Develop says so and offers to bring it back. Masks'
 own curves keep rendering either way.
 
+## Resting block
+
+From 3.1.0, on Safelight 3.2.1 or newer, the live view leaves the Tone Curve block out of the develop shader while every curve is straight, on lines 2 and 3 (line 1 looks every pixel up in its 8-bit table). The picture is the same either way, and thumbnails and exports always run it.
+
 ## Release lines
 
 A release's major version is its line: the process version its curve block

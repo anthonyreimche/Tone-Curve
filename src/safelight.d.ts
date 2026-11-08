@@ -125,6 +125,9 @@ export interface ProcessingStageContribution {
   /** Functions the block calls, declared ahead of main(). */
   helpers?: string;
   uniforms: UniformDeclaration[];
+  /** Uniform values at which the stage changes nothing: while every one holds,
+   *  the live view leaves the stage out of its program (Safelight 3.2.1). */
+  dormantWhen?: Readonly<Record<string, number | boolean>>;
   /** Textures the block samples; a "photo" one is filled by derive. */
   textures?: readonly { key: string; kind: "photo" }[];
   /** The uniforms' and photo textures' values for a photo (official

@@ -79,6 +79,10 @@ export function toneCurveStage(line: Line): ProcessingStageContribution {
     glsl: "if (uCurveActive) c = applyToneCurve(c);",
     helpers: RANGED_TONE_CURVE_HELPERS,
     uniforms: [{ key: "uCurveActive", glslType: "bool", default: false }],
+    // The block is skipped outright while every curve is straight, so leaving
+    // it out of the program changes nothing. Line 1 looks every pixel up in
+    // an 8-bit table and clips what it passes.
+    dormantWhen: { uCurveActive: false },
     derive: (params, ctx) => ({ ...versionedTable(params, ctx), uCurveActive: !isDefaultToneCurves(params.toneCurve) }),
   };
 }

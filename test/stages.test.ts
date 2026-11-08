@@ -55,6 +55,43 @@ const S_CURVE: ToneCurves = {
 const tableOf = (stage: ProcessingStageContribution, curves: ToneCurves, processVersion = 2) =>
   stage.derive?.({ toneCurve: curves, processVersion }, CTX).uCurve as StageTextureData;
 
+describe("dormantWhen", () => {
+  const rule = (line: Line) => Object.entries(toneCurveStage(line).dormantWhen ?? {});
+
+  /** Whether the curves leave the stage's rule true, as the stage derives them. */
+  const holds = (curves: ToneCurves): boolean => {
+    const stage = toneCurveStage(3);
+    const derived: Record<string, unknown> = stage.derive?.({ toneCurve: curves, processVersion: 2 }, CTX) ?? {};
+    expect(rule(3)).not.toEqual([]);
+    return rule(3).every(([key, value]) => derived[key] === value);
+  };
+
+  it("is off on line 1, which looks every pixel up and clips what it passes", () => {
+    expect(toneCurveStage(1).dormantWhen).toBeUndefined();
+  });
+
+  it.each([2, 3] as const)("lets line %i sleep while every curve is straight", (line) => {
+    expect(toneCurveStage(line).dormantWhen).toEqual({ uCurveActive: false });
+  });
+
+  it.each([2, 3] as const)("names a bool uniform line %i declares, and no array", (line) => {
+    expect(rule(line)).not.toEqual([]);
+    for (const [key] of rule(line)) {
+      const uniform = toneCurveStage(line).uniforms.find((u) => u.key === key);
+      expect(uniform?.glslType).toBe("bool");
+      expect(uniform).not.toHaveProperty("length");
+    }
+  });
+
+  it("holds for straight curves and breaks for a bent one in any channel", () => {
+    expect(holds(DEFAULT_CURVES)).toBe(true);
+    expect(holds(S_CURVE)).toBe(false);
+    for (const channel of ["red", "green", "blue"] as const) {
+      expect(holds({ ...DEFAULT_CURVES, [channel]: S_CURVE.rgb })).toBe(false);
+    }
+  });
+});
+
 describe("toneCurveStage", () => {
   it.each([1, 2, 3] as const)("registers line %i's text as the app froze it", (line) => {
     expect(sha256(stageText(toneCurveStage(line)))).toBe(LINE_HASHES[line]);
