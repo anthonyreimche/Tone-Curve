@@ -24,6 +24,7 @@ describe("activate", () => {
         title: "Tone Curve",
         component: ToneCurvePanel,
         defaultDock: { module: "develop", direction: "right", order: 6, width: 280, height: 220 },
+        modules: ["develop"],
         onReset: expect.any(Function),
         mask: TONE_CURVE_MASK_PANEL,
       },

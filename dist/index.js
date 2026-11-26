@@ -179,6 +179,7 @@ function w(e) {
 			glslType: "bool",
 			default: !1
 		}],
+		dormantWhen: { uCurveActive: !1 },
 		derive: (e, t) => ({
 			...C(e, t),
 			uCurveActive: !g(e.toneCurve)
@@ -200,6 +201,7 @@ function D(e) {
 			width: 280,
 			height: 220
 		},
+		modules: ["develop"],
 		onReset: () => void e.stores.useDevelopStore.getState().resetParams(["toneCurve"], "Reset Tone Curve"),
 		mask: u
 	}), e.registerSettings(d);
